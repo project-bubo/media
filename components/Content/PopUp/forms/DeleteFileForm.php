@@ -2,30 +2,42 @@
 
 namespace Netstars\Media\Components\Content\PopUp;
 
-class DeleteFileForm extends BaseForm {
+/**
+ * Delete file popup form
+ */
+class DeleteFileForm extends BaseForm
+{
 
-    public function __construct($parent, $name) {
-        parent::__construct($parent, $name);        
-        
+    /**
+     * Constructor
+     * @param Nette\Application\UI\Control $parent
+     * @param string $name
+     */
+    public function __construct($parent, $name)
+    {
+        parent::__construct($parent, $name);
+
         $fileId = $this->parent->getId();
         $this->addSubmit('send', 'OK');
-        
+
         $this->addHidden('fileId', $fileId);
-        
-        $this->onSuccess[] = array($this, 'formSubmited');  
+
+        $this->onSuccess[] = array($this, 'formSubmited');
     }
 
-    
-    public function formSubmited($form) {
-        
+    /**
+     * Process form
+     * @param DeleteFileForm $form
+     */
+    public function formSubmited($form)
+    {
+
         $values = $form->getValues();
-        
+
         $media = $this->lookup('Netstars\\Media');
-        
+
         $this->presenter->mediaManagerService->deleteFile($values['fileId'], $media->getCurrentSection());
-        
         $media->invalidateControl();
-       
     }
-    
+
 }

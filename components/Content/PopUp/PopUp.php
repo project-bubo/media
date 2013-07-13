@@ -4,104 +4,123 @@ namespace Netstars\Media\Components\Content;
 
 use Netstars;
 
-class PopUp extends Netstars\Components\RegisteredControl {   
-   
+/**
+ * Popup class
+ */
+class PopUp extends Netstars\Components\RegisteredControl
+{
+
     /**
      * Template name
      * @var string
      */
     private $template;
-    
+
     /**
-     * Id of folder item the popup is binded to 
+     * Id of folder item the popup is binded to
      * @var int
      */
     private $id;
-    
+
     /**
      * Text of the message in popup
      * @var string
      */
     private $message;
-    
+
     /**
      * Generic factory for popup forms
      * @param string $name
      * @return mixed
      */
-    public function createComponent($name) 
+    public function createComponent($name)
     {
-        
+
         if (preg_match('([a-zA-Z0-9]+Form)', $name)) {
-            // detect section            
+            // detect section
             $classname = "Netstars\\Media\\Components\\Content\\PopUp\\" . ucfirst($name);
             if (class_exists($classname)) {
                 $form = new $classname($this, $name);
                 //$section->setTranslator($this->presenter->context->translator);
                 return $form;
             }
-        } 
-        
+        }
+
         return parent::createComponent($name);
     }
-    
-    public function getFolderId() {
+
+    /**
+     * Returns folder id
+     * @return int
+     */
+    public function getFolderId()
+    {
         $media = $this->lookup('Netstars\\Media');
         return $media->getFolderId();
     }
-    
+
     /**
-     * Support method for retrieving current section
-     * @return type
+     * Supplement method for retrieving current section
+     * @return string
      */
-    public function getCurrentSection() {
+    public function getCurrentSection()
+    {
         $media = $this->lookup('Netstars\\Media');
         return $media->getCurrentSection();
     }
-    
+
     /**
      * Sets ID
      * @param int $id
      */
-    public function setId($id) {
+    public function setId($id)
+    {
         $this->id = $id;
     }
-    
+
     /**
      * Returns ID
      * @return int
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
-    
+
     /**
      * Sets message
      * @param string $message
      */
-    public function setMessage($message) {
+    public function setMessage($message)
+    {
         $this->message = $message;
     }
-    
+
     /**
      * Returns message
      * @return string
      */
-    public function getMessage() {
+    public function getMessage()
+    {
         return $this->message;
     }
-    
+
     /**
      * Sets template
      * @param string $template
      */
-    public function setTemplate($template) {
+    public function setTemplate($template)
+    {
         $this->template = $template;
     }
-    
-    public function render() {
+
+    /**
+     * Renders the popup window based on selected template
+     */
+    public function render()
+    {
         $template = $this->createNewTemplate(__DIR__ . '/templates/default.latte');
-        
+
         switch ($this->template) {
             case 'confirmDeleteFolder':
                 $template = $this->createNewTemplate(__DIR__ . '/templates/deleteFolder.latte');
@@ -138,12 +157,12 @@ class PopUp extends Netstars\Components\RegisteredControl {
                 $template = $this->createNewTemplate(__DIR__ . '/templates/editTitles.latte');
                 $media = $this->lookup('Netstars\\Media');
                 $langs = $this->presenter->langManagerService->getLangs();
-                $config = $media->getConfig();               
+                $config = $media->getConfig();
 
                 $template->title = 'Popisek obrázku';
                 $template->langs = $langs;
                 $template->titleConfig = $config['titles'];
-                
+
                 break;
             case 'insertFile':
                 $template = $this->createNewTemplate(__DIR__ . '/templates/insertFile.latte');
@@ -151,12 +170,11 @@ class PopUp extends Netstars\Components\RegisteredControl {
                 break;
             default:
                 $template->title = 'Vytvořit novou složku';
-                
-                
+
+
         }
-        
+
         $template->render();
      }
 
-    
 }
