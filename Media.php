@@ -51,9 +51,6 @@ class Media extends Components\RegisteredControl {
      */
     public $extName;
 
-
-    public $formValues;
-
     /**
      * Generic factory for first order media subcomponents
      * @param string $name
