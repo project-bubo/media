@@ -4,7 +4,8 @@ namespace Netstars;
 
 use Nette;
 
-class Media extends Components\RegisteredControl {
+class Media extends Components\RegisteredControl
+{
 
     const FOLDER = 'folder',
           GALLERY = 'gallery',
@@ -56,7 +57,8 @@ class Media extends Components\RegisteredControl {
      * @param string $name
      * @return mixed
      */
-    public function createComponent($name) {
+    public function createComponent($name)
+    {
         $nsClassName = 'Netstars\\Media\\Components\\' . ucfirst($name);
         if (class_exists($nsClassName)) {
             return new $nsClassName($this, $name);
@@ -68,8 +70,8 @@ class Media extends Components\RegisteredControl {
      * Retuns javascript configuration of the component
      * @return string
      */
-    public function getMediaJsConfig() {
-
+    public function getMediaJsConfig()
+    {
         $jsConfig = array(
                         'initialOffset' =>  self::SCROLLING_OFFSET,
                         'offset'        =>  self::SCROLLING_OFFSET,
@@ -86,7 +88,8 @@ class Media extends Components\RegisteredControl {
      * Sends tinyMce command as JSON response
      * @param array $tinyArgs
      */
-    public function sendTinyMceCommand($tinyArgs) {
+    public function sendTinyMceCommand($tinyArgs)
+    {
         $this->presenter->payload->tinyControl = array(
                                                     'command' => 'insertImage',
                                                     'args'    => $tinyArgs
@@ -99,7 +102,8 @@ class Media extends Components\RegisteredControl {
      * Returns folderId
      * @return int
      */
-    public function getFolderId() {
+    public function getFolderId()
+    {
         return $this->folderId;
     }
 
@@ -107,7 +111,8 @@ class Media extends Components\RegisteredControl {
      * Returns actually selected section
      * @return string
      */
-    public function getCurrentSection() {
+    public function getCurrentSection()
+    {
         $config = $this->getConfig();
         $defaultSection = $config['general']['defaultSection'];
 
@@ -123,7 +128,8 @@ class Media extends Components\RegisteredControl {
      * @return string
      * @throws Nette\InvalidStateException
      */
-    public function getTrigger() {
+    public function getTrigger()
+    {
         $generalConfig = $this->getConfig('general');
         if (array_search($this->trigger, $generalConfig['allowedTriggers']) === FALSE) {
             throw new Nette\InvalidStateException("'".$this->trigger."' is unknown trigger");
@@ -136,7 +142,8 @@ class Media extends Components\RegisteredControl {
      * files, galleries ...
      * @return array
      */
-    public function getAllSections() {
+    public function getAllSections()
+    {
         $config = $this->getConfig();
         return $config['layout']['sections'];
     }
@@ -146,7 +153,8 @@ class Media extends Components\RegisteredControl {
      * @param string|null $section
      * @return array
      */
-    public function getConfig($section = NULL) {
+    public function getConfig($section = NULL)
+    {
         $config = $this->presenter->configLoaderService->load(__DIR__ . '/config/config.neon');
         return $section ? $config[$section] : $config;
     }
@@ -154,7 +162,8 @@ class Media extends Components\RegisteredControl {
     /**
      * Render component
      */
-    public function render() {
+    public function render()
+    {
         try {
             $this->presenter->mediaManagerService->createStructure();
             $template = $this->createNewTemplate(__DIR__ . '/templates/default.latte');

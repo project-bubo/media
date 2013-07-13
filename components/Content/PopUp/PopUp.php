@@ -7,7 +7,8 @@ use Netstars;
 /**
  * Popup class
  */
-class PopUp extends Netstars\Components\RegisteredControl {
+class PopUp extends Netstars\Components\RegisteredControl
+{
 
     /**
      * Template name

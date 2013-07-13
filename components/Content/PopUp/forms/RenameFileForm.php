@@ -4,36 +4,40 @@ namespace Netstars\Media\Components\Content\PopUp;
 
 use Nette;
 
-class RenameFileForm extends BaseForm {
+/**
+ * Rename file popup form
+ */
+class RenameFileForm extends BaseForm
+{
 
-    public function __construct($parent, $name) {
-        parent::__construct($parent, $name);        
-        
+    /**
+     * Constructor
+     * @param Nette\Application\UI\Control $parent
+     * @param string $name
+     */
+    public function __construct($parent, $name)
+    {
+        parent::__construct($parent, $name);
+
         $fileId = $this->parent->getId();
-        
-        
         $file = $this->presenter->mediaManagerService->getFile($fileId);
-        
-       
-        //$currentSection = $this->parent->getCurrentSection();
-        
         $this->addText('fileName', 'Nový název souboru')
                         ->setDefaultValue($file['name'])
                         ->setRequired('Zadejte název souboru');
-        
+
         $this->addSubmit('send', 'OK');
-        
+
         $this->addHidden('fileId', $fileId);
-        //$this->addHidden('currentSection', $currentSection);
-        
-        $this->onSuccess[] = array($this, 'formSubmited');  
-    
-        //$this['send']->getControlPrototype()->class = "submit";
+        $this->onSuccess[] = array($this, 'formSubmited');
     }
 
-    
-    public function formSubmited($form) {
-        
+    /**
+     * Process form
+     * @param RenameFileForm $form
+     */
+    public function formSubmited($form)
+    {
+
         $values = $form->getValues();
 
         try {
@@ -45,10 +49,9 @@ class RenameFileForm extends BaseForm {
             $this->presenter->flashMessage($ex->getMessage(), 'error');
             $this->presenter->invalidateControl();
         }
-        
+
         $p = $this->lookup('Netstars\\Media');
         $p->invalidateControl();
-        
     }
-    
+
 }
